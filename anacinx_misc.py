@@ -1,7 +1,3 @@
-!pip install ipywidgets > /dev/null
-!jupyter nbextension enable --py widgetsnbextension
-
-from tqdm import tqdm
 from IPython.display import Image, clear_output
 import ipywidgets as widgets
 from ipywidgets import interact, interact_manual
@@ -169,13 +165,14 @@ def on_button_clicked_0(button):
         print("Done!")
     elif button == create_visualization_widget:
         print("Creating Visualization...")
-        !apptainer exec instance://anacin_jupyter_instance \
-        bash -c 'cd /ANACIN-X ; python3 anacin-x/event_graph_analysis/visualization/make_message_nd_plot.py \
-        /home/bbogale/results/kdts.pkl \
-        message_race \
-        anacin-x/event_graph_analysis/graph_kernel_policies/wlst_5iters_logical_timestamp_label.json \
-        /home/bbogale/results/kdts \
-        0.0 0.1 1.0'
+       #!apptainer exec instance://anacin_jupyter_instance \
+       #bash -c 'cd /ANACIN-X ; python3 anacin-x/event_graph_analysis/visualization/make_message_nd_plot.py \
+       #/home/bbogale/results/kdts.pkl \
+       #message_race \
+       #anacin-x/event_graph_analysis/graph_kernel_policies/wlst_5iters_logical_timestamp_label.json \
+       #/home/bbogale/results/kdts \
+       #0.0 0.1 1.0'
+        create_graph()
     elif button == display_visualization_widget:
 #         display(display_visualization_widget)
         display(Image(filename="/home/bbogale/results//kdts.png"))
