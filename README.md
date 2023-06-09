@@ -7,3 +7,6 @@
   - `module load apptainer`
 - You need to have openmpi loaded
   - `spack load openmpi`
+
+### Accessing the notebook
+- To access the notebook, simply navigate to `localhost:PORT` in your designated browser
