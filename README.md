@@ -7,6 +7,8 @@
   - `module load apptainer`
 - You need to have openmpi loaded
   - `spack load openmpi`
+- Start the notebook
+  - `jupyter notebook --no-browser --port=8888`
 
 ### Accessing the notebook
 - To access the notebook, simply navigate to `localhost:PORT` in your designated browser
