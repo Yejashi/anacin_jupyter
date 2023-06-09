@@ -101,12 +101,30 @@ extern_type_selector_widget = widgets.Button(
     layout=layout
 )
 
+#Output directory
+output_dir_widget = widgets.Text(
+    value="",
+    description='Enter output directory path:',
+    style= {'description_width': 'initial'},
+    layout=layout
+)
+
+#Image path
+image_path_widget = widgets.Text(
+    value="",
+    description='Enter container image path:',
+    style= {'description_width': 'initial'},
+    layout=layout
+)
+
 param_num_processes = num_processes_widget.value
 param_num_runs = num_runs_widget.value
 param_num_iterations = num_iterations_widget.value
 param_pnmpi_config = pnmpi_conf_widget.value
 param_executable = executable_widget.value
 param_executable_args = executable_args_widget.value
+param_output_dir = output_dir_widget.value
+param_image_path = image_path_widget.value
 
 def listen_processess(change):
     global param_num_processes
@@ -131,6 +149,14 @@ def listen_executable(change):
 def listen_args(change):
     global param_executable_args
     param_executable_args = change.new  
+
+def listen_output_dir(change):
+    global param_output_dir
+    param_output_dir = change.new  
+
+def listen_image_path(change):
+    global param_image_path
+    param_image_path = change.new  
 # print(param_num_processes)
 # print(param_num_runs)
 # print(param_num_iterations)
@@ -149,19 +175,24 @@ def on_button_clicked_0(button):
         clean_output_dir("/home/bbogale/results/")
 #         def trace_execution(executable_path, args, num_processes, num_runs, num_iterations, pnmpi_conf, output_dir):
 #         trace_execution("/ANACIN-X/apps/comm_pattern_generator/build/comm_pattern_generator", "/home/bbogale/results/message_race_msg_size_512_niters_5_ndp_0.0_0.1_1.0.json /ANACIN-X/anacin-x/config", 30, 10, "dumpi_pluto_csmpi.conf", "/home/bbogale/results")
-        trace_execution("/ANACIN-X/apps/comm_pattern_generator/build/comm_pattern_generator", "/home/bbogale/results/message_race_msg_size_512_niters_5_ndp_0.0_0.1_1.0.json /ANACIN-X/anacin-x/config", param_num_processes, param_num_runs, param_num_iterations, param_pnmpi_config, "/home/bbogale/results")
+        #trace_execution("/ANACIN-X/apps/comm_pattern_generator/build/comm_pattern_generator", "/home/bbogale/results/message_race_msg_size_512_niters_5_ndp_0.0_0.1_1.0.json /ANACIN-X/anacin-x/config", param_num_processes, param_num_runs, param_num_iterations, param_pnmpi_config, "/home/bbogale/results")
+        tmp_param = param_output_dir + "/message_race_msg_size_512_niters_" + str(param_num_iterations) + "_ndp_0.0_0.1_1.0.json" + " /ANACIN-X/anacin-x/config"
+        trace_execution("/ANACIN-X/apps/comm_pattern_generator/build/comm_pattern_generator", tmp_param, param_num_processes, param_num_runs, param_num_iterations, param_pnmpi_config, param_output_dir)
     elif button == gen_event_graph_widget:
         print("Generating Event Graph...")
 #         generate_event_graph(30, 10, "dumpi_and_csmpi.json", "/home/bbogale/results/")
-        generate_event_graph(param_num_processes, param_num_runs, "dumpi_and_csmpi.json", "/home/bbogale/results/")
+        #generate_event_graph(param_num_processes, param_num_runs, "dumpi_and_csmpi.json", "/home/bbogale/results/")
+        generate_event_graph(param_num_processes, param_num_runs, "dumpi_and_csmpi.json", param_output_dir)
     elif button == slice_extraction_widget:
         print("Extracting Slices...")
 #         extract_slices(30, 10,  "barrier_delimited_full.json", "/home/bbogale/results/")
-        extract_slices(param_num_processes, param_num_runs,  "barrier_delimited_full.json", "/home/bbogale/results/")
+        #extract_slices(param_num_processes, param_num_runs,  "barrier_delimited_full.json", "/home/bbogale/results/")
+        extract_slices(param_num_processes, param_num_runs,  "barrier_delimited_full.json", param_output_dir)
     elif button == compute_kdts_widget:
         print("Computing the KDTS...")
 #         compute_kdts(30, "barrier_delimited_full.json", "/home/bbogale/results/")
-        compute_kdts(param_num_processes, "barrier_delimited_full.json", "/home/bbogale/results/")        
+        #compute_kdts(param_num_processes, "barrier_delimited_full.json", "/home/bbogale/results/")        
+        compute_kdts(param_num_processes, "barrier_delimited_full.json", param_output_dir)
         print("Done!")
     elif button == create_visualization_widget:
         print("Creating Visualization...")
@@ -172,10 +203,12 @@ def on_button_clicked_0(button):
        #anacin-x/event_graph_analysis/graph_kernel_policies/wlst_5iters_logical_timestamp_label.json \
        #/home/bbogale/results/kdts \
        #0.0 0.1 1.0'
-        create_graph()
+        create_graph(param_output_dir)
     elif button == display_visualization_widget:
 #         display(display_visualization_widget)
-        display(Image(filename="/home/bbogale/results//kdts.png"))
+        param_tmp = param_output_dir + "/kdts.png"
+        #display(Image(filename="/home/bbogale/results//kdts.png"))
+        display(Image(filename=param_tmp))
     
 def on_button_clicked_1(button):
     clear_output()
@@ -191,6 +224,9 @@ num_iterations_widget.observe(listen_iterations, names='value')
 pnmpi_conf_widget.observe(listen_pnmpi, names='value')
 executable_widget.observe(listen_executable, names='value')
 executable_args_widget.observe(listen_args, names='value')
+output_dir_widget.observe(listen_output_dir, names='value')
+image_path_widget.observe(listen_image_path, names='value')
+
 
 trace_widget.on_click(on_button_clicked_0)
 gen_event_graph_widget.on_click(on_button_clicked_0)
