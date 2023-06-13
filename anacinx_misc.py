@@ -172,7 +172,9 @@ def on_button_clicked_0(button):
     display(button)
     if button == trace_widget:
         print("Tracing...")
-        clean_output_dir(param_output_dir)
+        if clean_output_dir(param_output_dir) == 0:
+            print("Invalid output directory")
+            return
 #         def trace_execution(executable_path, args, num_processes, num_runs, num_iterations, pnmpi_conf, output_dir):
 #         trace_execution("/ANACIN-X/apps/comm_pattern_generator/build/comm_pattern_generator", "/home/bbogale/results/message_race_msg_size_512_niters_5_ndp_0.0_0.1_1.0.json /ANACIN-X/anacin-x/config", 30, 10, "dumpi_pluto_csmpi.conf", "/home/bbogale/results")
         #trace_execution("/ANACIN-X/apps/comm_pattern_generator/build/comm_pattern_generator", "/home/bbogale/results/message_race_msg_size_512_niters_5_ndp_0.0_0.1_1.0.json /ANACIN-X/anacin-x/config", param_num_processes, param_num_runs, param_num_iterations, param_pnmpi_config, "/home/bbogale/results")
